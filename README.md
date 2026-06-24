@@ -33,7 +33,7 @@ The code covers four analysis strands:
 
 ## Citation
 
-If you use this code, please cite both the article and the archived code release:
+If you use this code, please cite the article:
 
 > Bastian, L., Hamann, H., Näher, T., Rauss, K., & Born, J. Sleep enhances spatial schema memory formation in humans. [bioRxiv, 2026, DOI:10.64898/2026.06.16.732347].
 
