@@ -1,0 +1,64 @@
+# ---- macOS ----
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+Icon
+
+# ---- Windows ----
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ---- Linux ----
+*~
+.directory
+
+# ---- Editors / IDEs ----
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ---- R ----
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+*.egg-info/
+
+# ---- MATLAB ----
+*.asv
+*.m~
+slprj/
+
+# ---- Data (lives on OSF, not GitHub) ----
+data/
+*.csv
+*.tsv
+*.mat
+*.edf
+*.vhdr
+*.vmrk
+*.eeg
+*.set
+*.fdt
+
+# ---- Output / scratch ----
+output/
+results/
+tmp/
+*.log
