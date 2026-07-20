@@ -29,14 +29,26 @@ cond_cols <- c(
 
 
 
-## performance above chance level? 
-t.test(data$mean_acc_new[data$Condition == 'sleep'],mu = 0.167)
-t.test(data$mean_acc_new[data$Condition == 'control'],mu = 0.167)
-t.test(data$mean_acc_new[data$Condition == 'wake'],mu = 0.167)
+## performance above chance level?
+## chance level = 1/6 = 0.16667 (six possible category ratios)
+chance <- 1/6
 
-t.test(data$mean_acc_old[data$Condition == 'sleep'],mu = 0.167)
-t.test(data$mean_acc_old[data$Condition == 'control'],mu = 0.167)
-t.test(data$mean_acc_old[data$Condition == 'wake'],mu = 0.167)
+# helper: one-sample t-test reporting t, df, p, 95% CI of the mean,
+# and Cohen's d with its 95% CI (noncentral-t based, via effectsize)
+above_chance <- function(x, label){
+  x  <- x[!is.na(x)]
+  tt <- t.test(x, mu = chance)
+  d  <- effectsize::cohens_d(x - chance, mu = 0, ci = 0.95)
+  cat(sprintf("%-18s n=%d  mean=%.3f  t(%d)=%.2f  p=%s  95%% CI mean[%.3f, %.3f]  d=%.2f [%.2f, %.2f]\n",
+              label, length(x), mean(x), tt$parameter, tt$statistic,
+              format.pval(tt$p.value, digits = 3),
+              tt$conf.int[1], tt$conf.int[2], d$Cohens_d, d$CI_low, d$CI_high))
+}
+
+for (cond in c('sleep','control','wake'))
+  above_chance(data$mean_acc_new[data$Condition == cond], paste0('new - ', cond))
+for (cond in c('sleep','control','wake'))
+  above_chance(data$mean_acc_old[data$Condition == cond], paste0('old - ', cond))
 
 ################################################################################
 ########## do accuracies for old/new boxes differ between conditions? ##########
@@ -50,7 +62,8 @@ data_long$boxtype = as.factor(data_long$boxtype)
 
 aov_old_new <- aov(value ~ Condition*boxtype+Gender + Error(ID/boxtype), data = data_long)
 summary(aov_old_new)
-eta_squared(aov_old_new, partial = TRUE)
+# partial eta^2 with 95% CI as effect size for each term
+eta_squared(aov_old_new, partial = TRUE, ci = 0.95)
 
 
 
@@ -126,9 +139,11 @@ print(p_new)
 
 model_new_old <- aov(mean_acc_new ~ mean_acc_old*Condition+Gender, data = data, na.action = na.omit)
 summary(model_new_old)
-eta_squared(model_new_old, partial = TRUE)
+# partial eta^2 with 95% CI (effect size for the interaction = Fig. 2b asterisks)
+eta_squared(model_new_old, partial = TRUE, ci = 0.95)
 emtr <- emtrends(model_new_old, ~ Condition, var = "mean_acc_old")
 pairs(emtr, adjust = 'none')
+# per-condition slopes (b) with 95% CI -> values plotted / reported in Fig. 2b
 summary(emtr, infer = TRUE)
 
 
