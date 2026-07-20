@@ -44,12 +44,6 @@ eff_size(emm_cond, sigma = sigma(model_PVT),        # standardised effect (d)
 
 
 ################## BAYES FACTOR: EVIDENCE FOR NO DIFFERENCE ####################
-# A non-significant ANOVA is only absence of evidence. To quantify evidence FOR
-# the null (PVT reaction time does not differ between retention conditions) we
-# compute Bayes factors. Condition is BETWEEN subjects, so we collapse the 7
-# repeated sessions into one mean per participant (avoids pseudo-replication)
-# and compare each pair of conditions with a two-sample JZS Bayes factor.
-# H0: delta = 0 ; H1: delta ~ Cauchy(0, r).  BF01 > 1 favours the null.
 
 PVT_subj <- PVT_df %>%
   group_by(subID, condition) %>%
